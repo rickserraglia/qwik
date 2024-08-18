@@ -3,12 +3,13 @@ import type { AppCommand } from '../utils/app-command';
 import { bgMagenta } from 'kleur/colors';
 import { bye } from '../utils/utils';
 import { replacePackage } from './replace-package';
+import { updateDependencies } from './update-dependencies';
 
 export async function runV2Migration(app: AppCommand) {
   intro(
     `✨  ${bgMagenta(' This command will migrate your Qwik application from v1 to v2 \n')}` +
       `This includes the following: \n` +
-    //   TODO: package names
+      //   TODO: package names
       `  - "@builder.io/qwik", "@builder.io/qwik-city" packages will be rescoped to "@qwik.dev/core" and "@qwik.dev/qwik-city" \n` +
       `  - related dependencies will be updated \n`
   );
@@ -22,11 +23,11 @@ export async function runV2Migration(app: AppCommand) {
   }
 
   try {
-      replacePackage('@builder.io/qwik', '@qwik.dev/qwik');
-      replacePackage('@builder.io/qwik-city', '@qwik.dev/city');
+    replacePackage('@builder.io/qwik', '@qwik.dev/qwik');
+    replacePackage('@builder.io/qwik-city', '@qwik.dev/city');
+    await updateDependencies();
   } catch (error) {
     console.log(error);
-    throw error
+    throw error;
   }
-
 }
